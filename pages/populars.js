@@ -2,15 +2,15 @@ import styled from '@emotion/styled'
 import Layout from '../components/layout/Layout'
 
 const Heading = styled.h1`
-  color: blue;
+  color: red;
 `;
 
-export default function About() {
+export default function Populars() {
   return (
 
     <div>
       <Layout>
-        <Heading>About</Heading>
+        <Heading>Populars</Heading>
       </Layout>
 
     </div>
