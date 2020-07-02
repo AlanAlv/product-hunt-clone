@@ -35,7 +35,12 @@ const Header = () => {
             `}
         >
             <ContainerHeader>
-                <div>
+                <div
+                    css={css`
+                        display: flex;
+                        align-items: center
+                    `}
+                >
                     <Link href="/">                    
                         <Logo>Project</Logo>
                     </Link>
