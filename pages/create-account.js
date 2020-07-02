@@ -1,8 +1,10 @@
-import styled from '@emotion/styled'
-import Layout from '../components/layout/Layout'
+import styled from '@emotion/styled';
+import Layout from '../components/layout/Layout';
+import { Form, Field, InputSubmit } from '../components/ui/Form';
 
 const Heading = styled.h1`
-  color: red;
+  text-align: center;
+  margin-top: 5rem;
 `;
 
 export default function CreateAccount() {
@@ -13,8 +15,8 @@ export default function CreateAccount() {
         <Heading>Create Account</Heading>
       </Layout>
 
-      <form action="">
-        <div>
+      <Form action="">
+        <Field>
           <label htmlFor="name">
             Name
           </label>
@@ -24,9 +26,9 @@ export default function CreateAccount() {
             placeholder="Name" 
             id="name"
           />
-        </div>
+        </Field>
 
-        <div>
+        <Field>
           <label htmlFor="email">
             Email
           </label>
@@ -36,9 +38,9 @@ export default function CreateAccount() {
             placeholder="Email" 
             id="email"
           />
-        </div>
+        </Field>
 
-        <div>
+        <Field>
           <label htmlFor="password">
             Password
           </label>
@@ -48,13 +50,13 @@ export default function CreateAccount() {
             placeholder="Password" 
             id="password"
           />
-        </div>
+        </Field>
 
-        <input 
+        <InputSubmit 
           type="submit" 
           value="Sign Up"
         />
-      </form>
+      </Form>
     </>
   )
 }
