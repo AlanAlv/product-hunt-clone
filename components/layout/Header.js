@@ -3,6 +3,7 @@ import Nav from './Nav'
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
+import Button from '../ui/Button';
 
 const ContainerHeader = styled.div`
     max-width: 1200px;
@@ -23,6 +24,9 @@ const Logo = styled.p`
 `;
 
 const Header = () => {
+
+    const user = true;
+
     return ( 
         <header
             css={css`
@@ -41,12 +45,46 @@ const Header = () => {
                     <Nav />
                 </div>
 
-                    <div>
-                        <p>Hello Alan</p>
+                    <div
+                        css={css`
+                            display:flex;
+                            align-items: center;
+                        `}
+                    >
+                        {user ? (
+                            <>
+                                <p
+                                    css={css`
+                                        margin-right: 2rem;
+                                    `}
+                                
+                                >
+                                    Hello Alan
+                                </p>
 
-                        <button type="button">Log Out</button>
-                        <Link href="/"><a title="Sign In">Sign In</a></Link>
-                        <Link href="/"><a title="Sign Up">Sign Up</a></Link>
+                                <Button 
+                                    bgColor={true}
+                                >
+                                    Log Out
+                                </Button>
+                                
+                               
+                            </>
+                        ) : (
+                            <>
+                                <Link href="/">
+                                    <Button
+                                        bgColor={true}
+                                    >
+                                        Sign In
+                                    </Button>
+                                </Link>
+
+                                <Link href="/">
+                                    <Button>Sign Up</Button>
+                                </Link>
+                            </>
+                        )}
 
                     </div>
 
