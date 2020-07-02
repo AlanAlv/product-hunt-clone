@@ -8,11 +8,53 @@ const Heading = styled.h1`
 export default function CreateAccount() {
   return (
 
-    <div>
+    <>
       <Layout>
         <Heading>Create Account</Heading>
       </Layout>
 
-    </div>
+      <form action="">
+        <div>
+          <label htmlFor="name">
+            Name
+          </label>
+          <input 
+            type="text" 
+            name="name"
+            placeholder="Name" 
+            id="name"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="email">
+            Email
+          </label>
+          <input 
+            type="email" 
+            name="email"
+            placeholder="Email" 
+            id="email"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="password">
+            Password
+          </label>
+          <input 
+            type="password" 
+            name="password"
+            placeholder="Password" 
+            id="password"
+          />
+        </div>
+
+        <input 
+          type="submit" 
+          value="Sign Up"
+        />
+      </form>
+    </>
   )
 }
