@@ -15,8 +15,9 @@ export default function validateCreateProduct(values) {
         if(!values.url){
             errors.url = "Product URL is required";
         }
-        else if (!/^(ftp|http|https):\/\/[^ "]+$/.test(values.url)){}
+        else if (!/^(ftp|http|https):\/\/[^ "]+$/.test(values.url)){
             errors.url = "Invalid URL";
+        }
 
     // Validate description
     if(!values.description){

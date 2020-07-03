@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
-import Router from 'next/router';
+import React, { useState, useContext } from 'react';
+import Router, { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 import Layout from '../components/layout/Layout';
 import { Form, Field, InputSubmit, Error } from '../components/ui/Form';
 import useValidation from '../hooks/useValidation';
 import firebase from '../firebase';
 import validateCreateProduct from '../validation/validateCreateProduct';
+import { FirebaseContext } from '../firebase';
 
 const Heading = styled.h1`
   text-align: center;
@@ -24,12 +25,36 @@ export default function NewProduct() {
 
   const [ error, setError ] = useState(false);
 
-  const {values, errors, handleSubmit, handleChange, handleBlur} = useValidation(INITIAL_STATE, validateCreateProduct, createAccount);
+  const {values, errors, handleSubmit, handleChange, handleBlur} = useValidation(INITIAL_STATE, validateCreateProduct, createProduct);
   
   const { name, company, image, url, description } = values;
 
-  async function createAccount () {
+  // Routing hook
+  const router = useRouter();
 
+  // Firebase context
+  const { user, firebase } = useContext(FirebaseContext);
+
+  async function createProduct () {
+
+    // Unauthenticated user redirect
+    if(!user){
+      return router.push('/login');
+    }
+
+    // Create new product object 
+    const product = {
+      name, 
+      company, 
+      url, 
+      description, 
+      votes: 0, 
+      comments: [], 
+      created: Date.now()
+    }
+
+    // Insert to db
+    firebase.db.collection('products').add(product);
   }
   
   return (
