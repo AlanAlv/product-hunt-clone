@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import Router, { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 import Layout from '../components/layout/Layout';
+import FileUploader from 'react-firebase-file-uploader';
 import { Form, Field, InputSubmit, Error } from '../components/ui/Form';
 import useValidation from '../hooks/useValidation';
 import firebase from '../firebase';
@@ -22,6 +23,12 @@ const INITIAL_STATE = {
 }
 
 export default function NewProduct() {
+
+  // Images State
+  const [imageName, setImageName] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [imageUrl, setImageUrl] = useState('');
 
   const [ error, setError ] = useState(false);
 
@@ -47,6 +54,7 @@ export default function NewProduct() {
       name, 
       company, 
       url, 
+      imageUrl,
       description, 
       votes: 0, 
       comments: [], 
@@ -55,7 +63,36 @@ export default function NewProduct() {
 
     // Insert to db
     firebase.db.collection('products').add(product);
+
+    return router.push('/');
   }
+
+  const handleUploadStart = () => { 
+    setProgress(0);
+    setUploading(true);
+  };
+
+  const handleProgress = progress => setProgress({ progress });
+
+  const handleUploadError = error => {
+    setUploading(error);
+    console.error(error);
+  };
+
+  const handleUploadSuccess = imageName => {
+    setProgress(100);
+    setUploading(false);
+    setImageName(imageName)
+    firebase
+      .storage
+      .ref("products")
+      .child(imageName)
+      .getDownloadURL()
+      .then(url => {
+        console.log(url);
+        setImageUrl(url);
+      });
+  };
   
   return (
 
@@ -79,6 +116,7 @@ export default function NewProduct() {
               name="name"
               placeholder="Name" 
               id="name"
+              value={name}
               onChange={handleChange}
               onBlur={handleBlur}
             />
@@ -94,6 +132,7 @@ export default function NewProduct() {
               type="text" 
               name="company"
               placeholder="Company" 
+              value={company}
               id="company"
               onChange={handleChange}
               onBlur={handleBlur}
@@ -101,21 +140,23 @@ export default function NewProduct() {
           </Field>
 
           {errors.company && <Error>{errors.company}</Error>}
-{/* 
+
           <Field>
             <label htmlFor="image">
               Image
             </label>
-            <input 
-              type="file" 
-              name="image"
+            <FileUploader 
+              accept="image/*"
               id="image"
-              onChange={handleChange}
-              onBlur={handleBlur}
+              name="image"
+              randomizeFilename
+              storageRef={firebase.storage.ref("products")}
+              onUploadStart={handleUploadStart}
+              onUploadError={handleUploadError}
+              onUploadSuccess={handleUploadSuccess}
+              onProgress={handleProgress}
             />
           </Field>
-
-          {errors.image && <Error>{errors.image}</Error>} */}
 
           <Field>
             <label htmlFor="url">
@@ -126,12 +167,14 @@ export default function NewProduct() {
               name="url"
               placeholder="Product URL"
               id="url"
+              value={url}
               onChange={handleChange}
               onBlur={handleBlur}
             />
           </Field>
 
           {errors.url && <Error>{errors.url}</Error>}
+
         </fieldset>
 
         <fieldset>
