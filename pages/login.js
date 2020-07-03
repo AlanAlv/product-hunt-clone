@@ -27,7 +27,7 @@ export default function Login(){
 
   async function logIn () {
     try {
-      await firebase.login(email, password);
+      const user = await firebase.login(email, password);
       Router.push('/');
     } catch (error) {
       console.error('Error authenticating user', error.message);
