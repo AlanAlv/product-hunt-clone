@@ -18,7 +18,7 @@ const useValidation = (initialState, validate, fn) => {
 
             setSubmitForm(false);
         }
-    }, []);
+    }, [errors]);
 
     // User inputs
     const handleChange = e => {
@@ -37,12 +37,16 @@ const useValidation = (initialState, validate, fn) => {
         setSubmitForm(true);
     }
 
+    const handleBlur = () =>{
+        const errorsValidation = validate(values);
+        setErrors(errorsValidation);
+    }
     return {
         values,
         errors,
-        submitForm,
         handleSubmit,
-        handleChange
+        handleChange,
+        handleBlur
     };
 }
  
