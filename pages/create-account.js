@@ -3,6 +3,7 @@ import Layout from '../components/layout/Layout';
 import { Form, Field, InputSubmit, Error } from '../components/ui/Form';
 import useValidation from '../hooks/useValidation';
 import validateCreateAccount from '../validation/validateCreateAccount';
+import firebase from '../firebase';
 
 const Heading = styled.h1`
   text-align: center;
@@ -22,8 +23,13 @@ export default function CreateAccount() {
   
   const { name, email, password } = values;
 
-  function createAccount () {
-    console.log('Creating acount...');
+  async function createAccount () {
+    try {
+      await firebase.register(name, email, password);
+    } catch (error) {
+      console.error('Error creating user', error.message);
+    }
+
   }
   
   return (
