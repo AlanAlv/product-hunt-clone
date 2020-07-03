@@ -4,8 +4,8 @@ import styled from '@emotion/styled';
 import Layout from '../components/layout/Layout';
 import { Form, Field, InputSubmit, Error } from '../components/ui/Form';
 import useValidation from '../hooks/useValidation';
-import validateCreateAccount from '../validation/validateCreateAccount';
 import firebase from '../firebase';
+import validateCreateProduct from '../validation/validateCreateProduct';
 
 const Heading = styled.h1`
   text-align: center;
@@ -24,7 +24,7 @@ export default function NewProduct() {
 
   const [ error, setError ] = useState(false);
 
-  const {values, errors, handleSubmit, handleChange, handleBlur} = useValidation(INITIAL_STATE, validateCreateAccount, createAccount);
+  const {values, errors, handleSubmit, handleChange, handleBlur} = useValidation(INITIAL_STATE, validateCreateProduct, createAccount);
   
   const { name, company, image, url, description } = values;
 
@@ -76,7 +76,7 @@ export default function NewProduct() {
           </Field>
 
           {errors.company && <Error>{errors.company}</Error>}
-
+{/* 
           <Field>
             <label htmlFor="image">
               Image
@@ -90,7 +90,7 @@ export default function NewProduct() {
             />
           </Field>
 
-          {errors.image && <Error>{errors.image}</Error>}
+          {errors.image && <Error>{errors.image}</Error>} */}
 
           <Field>
             <label htmlFor="url">
@@ -99,6 +99,7 @@ export default function NewProduct() {
             <input 
               type="url" 
               name="url"
+              placeholder="Product URL"
               id="url"
               onChange={handleChange}
               onBlur={handleBlur}
