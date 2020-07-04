@@ -1,11 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
-import styled from '@emotion/styled';
 import Layout from '../components/layout/Layout';
+import ProductDetails from '../components/layout/ProductDetails';
 import { FirebaseContext } from '../firebase';
 
-const Heading = styled.h1`
-  color: red;
-`;
 
 export default function Home() {
 
@@ -29,14 +26,25 @@ export default function Home() {
       }
     });
 
-    console.log(products)
+    setProducts(products);
   }
 
   return (
 
     <div>
       <Layout>
-        <Heading>Home</Heading>
+        <div className="list-products">
+          <div className="container">
+            <ul className="bg-white">
+              {products.map(product => (
+                <ProductDetails
+                  key={product.id}
+                  product={product}
+                />
+              ))}
+            </ul>
+          </div>
+        </div>
       </Layout>
 
     </div>
