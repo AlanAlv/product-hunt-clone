@@ -23,6 +23,7 @@ const Product = ({props}) => {
     // Product state
     const [product, setProduct] = useState({});
     const [error, setError] = useState(false);
+    const [comment, setComment] = useState({})
 
     const router = useRouter();
     const { query: { id } } = router;
@@ -43,12 +44,12 @@ const Product = ({props}) => {
             }
             getProduct();
         }
-    }, [id])
+    }, [id, product])
 
     if (Object.keys(product).length === 0) return 'Loading...';
     
     const {  comments, created, description, company, name, url, 
-        imageUrl, votes, creator} = product;
+        imageUrl, votes, creator, hasVoted} = product;
 
     // Voting
         const voteProduct = () => {
@@ -59,11 +60,19 @@ const Product = ({props}) => {
             // Sum new vote
             const newTotal = votes + 1;
 
+            // Check if user already has voted
+            if(hasVoted.includes(user.uid)) return;
+
+            // Save ids of users who already voted
+            const newHasVoted = [...hasVoted, user.uid];
+
             // Update db
             firebase.db.collection('products').doc(id).update({
-                votes: newTotal});
+                votes: newTotal,
+                hasVoted: newHasVoted
+            });
             
-                // Update state
+            // Update state
             setProduct({
                 ...product,
                 votes: newTotal
@@ -71,6 +80,41 @@ const Product = ({props}) => {
 
         }
 
+    // Comments
+    const commentChange = e => {
+        setComment({
+            ...comment,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const addComment = e => {
+        e.preventDefault();
+
+        if(!user){
+            return router.push('/login')
+        }
+
+        // Add user info to comment
+        comment.userId = user.uid;
+        comment.username = user.displayName;
+
+        // Add comments to array
+        const newComments = [ ...comments, comment ];
+
+        // Update db
+        firebase.db.collection('products').doc(id).update({
+            comments: newComments
+        })
+
+        // Update state
+        setProduct({
+            ...product,
+            comments: newComments
+        })
+
+
+    }
     return ( 
         <Layout>
             <>
@@ -95,11 +139,14 @@ const Product = ({props}) => {
                             { user && (
                                 <>
                                     <h2>Add a comment</h2>
-                                    <form>
+                                    <form
+                                        onSubmit={addComment}
+                                    >
                                         <Field>
                                             <input
                                                 type="text"
-                                                name="comment"
+                                                name="message"
+                                                onChange={commentChange}
                                             />
                                         </Field>
                                         <InputSubmit
@@ -121,12 +168,37 @@ const Product = ({props}) => {
                                 Comments
                             </h2>
 
-                            {comments.map(comment => (
-                                <li>
-                                    <p>{comment.name}</p>
-                                    <p>Comment by: {comment.username}</p>
-                                </li>
-                            ))}
+
+                            { comments.length === 0 
+                                ? 
+                                    'No comments, write one!' 
+                                : (
+                                    <ul>
+                                    {comments.map((comment, i) => (
+                                        <li
+                                            key={`${comment.userId}-${i}`}
+                                            css={css`
+                                                border: 1px solid #E1E1E1;
+                                                padding: 2rem;
+                                            `}
+                                        >
+                                            <p>{comment.message}</p>
+                                            <p>
+                                                Comment by: {' '} 
+                                                <span
+                                                    css={css`
+                                                        font-weight: bold;
+                                                    `}
+                                                >
+                                                    {comment.username}
+                                                </span>
+                                            </p>
+                                        </li>
+                                    ))}
+                                </ul>
+                                )
+                            }
+                           
                         </div>
 
                         <aside>

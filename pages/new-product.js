@@ -63,7 +63,8 @@ export default function NewProduct() {
       creator: {
         id: user.uid,
         name: user.displayName
-      }
+      },
+      hasVoted: []
     }
 
     // Insert to db
