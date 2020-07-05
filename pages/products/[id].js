@@ -47,7 +47,8 @@ const Product = ({props}) => {
 
     if (Object.keys(product).length === 0) return 'Loading...';
     
-    const {  comments, created, description, company, name, url, imageUrl, votes} = product
+    const {  comments, created, description, company, name, url, 
+        imageUrl, votes, creator} = product;
     return ( 
         <Layout>
             <>
@@ -64,7 +65,8 @@ const Product = ({props}) => {
                     <ProductContainer>
                         <div>
                             <p>Published on: {formatDistanceToNow(new Date(created))}</p>
-                        
+                            <p>By: {creator.name} from {company} </p>
+
                             <img src={imageUrl}/>
                             <p>{description}</p>
 
@@ -106,6 +108,7 @@ const Product = ({props}) => {
                             >
                                 Go to URL
                             </Button>
+                            
 
                             <div
                                 css={css`
