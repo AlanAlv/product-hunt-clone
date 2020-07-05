@@ -28,7 +28,7 @@ const Product = ({props}) => {
     const { query: { id } } = router;
 
     // Firebase context 
-    const { firebase } = useContext(FirebaseContext);
+    const { firebase, user } = useContext(FirebaseContext);
 
     useEffect(() => {
         if(id){
@@ -70,20 +70,27 @@ const Product = ({props}) => {
                             <img src={imageUrl}/>
                             <p>{description}</p>
 
-                            <h2>Add a comment</h2>
-                            <form>
-                                <Field>
-                                    <input
-                                        type="text"
-                                        name="comment"
-                                    />
-                                </Field>
-                                <InputSubmit
-                                    type="submit"
-                                    value="Add a comment"
-                                />
-                            </form>
+                            { user && (
+                                <>
+                                    <h2>Add a comment</h2>
+                                    <form>
+                                        <Field>
+                                            <input
+                                                type="text"
+                                                name="comment"
+                                            />
+                                        </Field>
+                                        <InputSubmit
+                                            type="submit"
+                                            value="Add a comment"
+                                        />
+                                    </form>
 
+                                </>
+                            )
+                            
+                            
+                            }
                             <h2
                                 css={css`
                                     margin: 2rem 0;
@@ -123,10 +130,12 @@ const Product = ({props}) => {
                                 `}
                             >
                                 {votes} Votes</p>
-
-                            <Button>
-                                Vote
-                            </Button>
+                            { user && (
+                                
+                                <Button>
+                                    Vote
+                                </Button>
+                            )}
                         </aside>
                     </ProductContainer>
                 </div>
