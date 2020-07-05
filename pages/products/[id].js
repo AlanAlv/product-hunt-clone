@@ -7,12 +7,14 @@ import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Field, InputSubmit } from '../../components/ui/Form';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import Button from '../../components/ui/Button';
 
 
 const ProductContainer = styled.div`
     @media(min-width: 768px) {
         display: grid;
         grid-template-columns: 2fr 1fr;
+        column-gap: 2rem;
     }
 `;
 
@@ -58,49 +60,73 @@ const Product = ({props}) => {
                             margin-top: 5rem;
                         `}
                     > { name }</h1>
-                </div>
 
-                <ProductContainer>
-                    <div>
-                        <p>Published on: {formatDistanceToNow(new Date(created))}</p>
-                    
-                        <img src={imageUrl}/>
-                        <p>{description}</p>
+                    <ProductContainer>
+                        <div>
+                            <p>Published on: {formatDistanceToNow(new Date(created))}</p>
+                        
+                            <img src={imageUrl}/>
+                            <p>{description}</p>
 
-                        <h2>Add a comment</h2>
-                        <form>
-                            <Field>
-                                <input
-                                    type="text"
-                                    name="comment"
+                            <h2>Add a comment</h2>
+                            <form>
+                                <Field>
+                                    <input
+                                        type="text"
+                                        name="comment"
+                                    />
+                                </Field>
+                                <InputSubmit
+                                    type="submit"
+                                    value="Add a comment"
                                 />
-                            </Field>
-                            <InputSubmit
-                                type="submit"
-                                value="Add a comment"
-                            />
-                        </form>
+                            </form>
 
-                        <h2
-                            css={css`
-                                margin: 2rem 0
-                            `}
-                        >
-                            Comments
-                        </h2>
+                            <h2
+                                css={css`
+                                    margin: 2rem 0;
+                                `}
+                            >
+                                Comments
+                            </h2>
 
-                        {comments.map(comment => (
-                            <li>
-                                <p>{comment.name}</p>
-                                <p>Comment by: {comment.username}</p>
-                            </li>
-                        ))}
-                    </div>
+                            {comments.map(comment => (
+                                <li>
+                                    <p>{comment.name}</p>
+                                    <p>Comment by: {comment.username}</p>
+                                </li>
+                            ))}
+                        </div>
 
-                    <aside>
-                        2
-                    </aside>
-                </ProductContainer>
+                        <aside>
+                            <Button
+                                target="_blank"
+                                bgColor="true"
+                                href={url}
+                            >
+                                Go to URL
+                            </Button>
+
+                            <div
+                                css={css`
+                                    margin-top: 5rem;
+                                `}
+                            >
+
+                            </div>
+                            <p
+                                css={css`
+                                    text-align: center;
+                                `}
+                            >
+                                {votes} Votes</p>
+
+                            <Button>
+                                Vote
+                            </Button>
+                        </aside>
+                    </ProductContainer>
+                </div>
             </>
         </Layout>
      );
