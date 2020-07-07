@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
 
@@ -27,15 +28,25 @@ const InputSubmit = styled.button`
 `;
 
 const Search = () => {
+
+    const [search, setSearch] = useState('');
+
+    const searchProduct = e => {
+        e.preventDefault();
+
+        if(search.trim() === '') return;
+    }
     return ( 
         <form
             css={css`
                 position: relative;
             `}
+            onSubmit={searchProduct}
         >
             <InputText 
                 type="text"
                 placeholder="Search Products"    
+                onChange={e => setSearch(e.target.value)}
             />
             <InputSubmit type="submit">Search</InputSubmit>
         </form>
