@@ -18,6 +18,16 @@ const ProductContainer = styled.div`
     }
 `;
 
+const ProductCreator = styled.p`
+    padding: .5rem 2rem;
+    background-color: #DA552F;
+    color: #FFF;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+`
+
 const Product = ({props}) => {
 
     // Product state
@@ -86,6 +96,13 @@ const Product = ({props}) => {
             ...comment,
             [e.target.name]: e.target.value
         })
+    }
+
+    // Checks if comment is from creator
+    const isCreator = id => {
+        if(creator.id == id){
+            return true;
+        }
     }
 
     const addComment = e => {
@@ -193,6 +210,11 @@ const Product = ({props}) => {
                                                     {comment.username}
                                                 </span>
                                             </p>
+                                            {isCreator(comment.userId) && 
+                                                    <ProductCreator>
+                                                        Creator
+                                                    </ProductCreator>
+                                            }
                                         </li>
                                     ))}
                                 </ul>
