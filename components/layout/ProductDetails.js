@@ -96,7 +96,7 @@ const ProductDetails = ({product}) => {
                 </div>
 
                 <div>
-                    <Link href="/products/[idD" as={`/products/${id}`}>
+                    <Link href="/products/[id]" as={`/products/${id}`}>
                         <Title>{name}</Title>
                     </Link>
                     <DescriptionText>{description}</DescriptionText>

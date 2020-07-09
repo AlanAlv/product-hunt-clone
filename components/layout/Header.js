@@ -40,7 +40,6 @@ const Header = () => {
                 <div
                     css={css`
                         display: flex;
-                        align-items: center
                     `}
                 >
                     <Link href="/">                    
